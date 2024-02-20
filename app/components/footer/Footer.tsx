@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
-  AiFillInstagram,
-  AiFillTwitterCircle,
-  AiFillYoutube,
+    AiFillInstagram,
+    AiFillTwitterCircle,
+    AiFillYoutube,
 } from "react-icons/ai";
 import { MdFacebook } from "react-icons/md";
 import Container from "../Container";
