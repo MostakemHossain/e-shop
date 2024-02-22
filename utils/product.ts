@@ -15,6 +15,12 @@ export const product=
         image:
           "https://m.media-amazon.com/images/I/71gOLg2-kqL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
       },
+      {
+        color: "Blue",
+        colorCode: " #0000FF",
+        image:
+          "https://m.media-amazon.com/images/I/713Om9vCHUL._AC_SX679_.jpg",
+      },
     ],
     reviews: [
       {

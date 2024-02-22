@@ -12,7 +12,7 @@ interface productProps{
 const ProductCard:React.FC<productProps> = ({data}) => {
     const router= useRouter()
 
-
+    const productRating=data.reviews.reduce((acc:number,item:any)=> item.rating+acc,0)/data.reviews.length
 
     return ( 
         <div

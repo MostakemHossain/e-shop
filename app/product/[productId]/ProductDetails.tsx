@@ -1,9 +1,27 @@
 "use client"
 
+import SetColor from "@/app/components/products/SetColors";
 import { Rating } from "@mui/material";
+import { useCallback, useState } from "react";
 
 interface ProductDetailsProps{
     product:any
+}
+export type SelectedImgType={
+  color:string,
+  colorCode:string,
+  img:string
+}
+
+export type CartProductType={
+  id:string,
+  name:string,
+  description:string,
+  brand:string,
+  category: string,
+  selectedImg:SelectedImgType,
+  quantity:number,
+  price:number,
 }
 
 const Horizontal=()=>{
@@ -12,7 +30,29 @@ const Horizontal=()=>{
 
 const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
 
-    const productRating=product.reviews.reduce((acc:number,item:any)=> item.rating+acc,0)/product.reviews.length
+  const [cartProduct,setCartProduct]= useState<CartProductType>({
+    id:product.id,
+    name:product.name,
+    description:product.description,
+    brand:product.brand,
+    category: product.category,
+    selectedImg:{...product.images[0]},
+    quantity:1,
+    price:product.price,
+  })
+  
+
+
+
+    const productRating=product.reviews.reduce((acc:number,item:any)=> item.rating+acc,0)/product.reviews.length;
+
+
+    const handleColorSelect=useCallback((value:SelectedImgType)=>{
+      setCartProduct((prev)=>{
+        return {...prev, selectedImg:value}
+      })
+
+    },[cartProduct.selectedImg])
 
 
     return ( 
@@ -49,9 +89,7 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
 
           </div>
           <Horizontal/>
-          <div>
-            color
-          </div>
+          <SetColor cartProduct={cartProduct} images={product.images} handleColorSelect={handleColorSelect}/>
           <Horizontal/>
           <div>
             Quantity
