@@ -1,5 +1,6 @@
 "use client"
 
+import Button from "@/app/components/Button";
 import SetColor from "@/app/components/products/SetColors";
 import SetQuantity from "@/app/components/products/SetQuantity";
 import { Rating } from "@mui/material";
@@ -71,7 +72,10 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
       setCartProduct((prev)=>{
         return {...prev,quantity:prev.quantity+1}
       })
-    },[cartProduct])
+    },[cartProduct]);
+
+
+    
 
 
     return ( 
@@ -112,8 +116,8 @@ const ProductDetails:React.FC<ProductDetailsProps> = ({product}) => {
           <Horizontal/>
           <SetQuantity cartProduct={cartProduct} handleQtyIncrease={handleQtyIncrease} handleQtyDecrease={handleQtyDecrease}/>
           <Horizontal/>
-          <div>
-            add to cart
+          <div className="max-w-[300px]">
+           <Button outline label="Add to Cart" onClick={()=>{}} />
           </div>
           </div>
         </div>
