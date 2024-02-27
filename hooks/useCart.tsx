@@ -1,62 +1,79 @@
 import { CartProductType } from "@/app/product/[productId]/ProductDetails";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import toast from 'react-hot-toast';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
+import toast from "react-hot-toast";
 
-type CartContextType={
-    cartTotalQty:number;
-    cartProducts:CartProductType[] | null
-    handleAddProductToCart:(product:CartProductType)=>void;
+type CartContextType = {
+  cartTotalQty: number;
+  cartProducts: CartProductType[] | null;
+  handleAddProductToCart: (product: CartProductType) => void;
+  handleRemoveProductFromCart: (product: CartProductType) => void;
+};
+export const CartContext = createContext<CartContextType | null>(null);
 
+interface Props {
+  [propName: string]: any;
 }
-export const CartContext= createContext<CartContextType | null>(null);
 
+export const CartContextProvider = (props: Props) => {
+  const [cartTotalQty, setCartTotalQty] = useState(0);
+  const [cartProducts, setCartProducts] = useState<CartProductType[] | null>(
+    null
+  );
 
-interface Props{
-    [propName:string]:any
-}
+  useEffect(() => {
+    const cartItems: any = localStorage.getItem("eShopCartItems");
+    const cartProducts: CartProductType[] | null = JSON.parse(cartItems);
 
-export const CartContextProvider=(props:Props)=>{
-    const [cartTotalQty, setCartTotalQty] = useState(0)
-    const [cartProducts, setCartProducts]=useState<CartProductType[]|null>(null);
+    setCartProducts(cartProducts);
+  }, []);
 
-    useEffect(()=>{
-        const cartItems:any=localStorage.getItem('eShopCartItems');
-        const cartProducts:CartProductType[] | null=JSON.parse(cartItems);
+  const handleAddProductToCart = useCallback((product: CartProductType) => {
+    setCartProducts((prev) => {
+      let updatedCart;
+      if (prev) {
+        updatedCart = [...prev, product];
+      } else {
+        updatedCart = [product];
+      }
+      toast.success("Product added to cart");
+      localStorage.setItem("eShopCartItems", JSON.stringify(updatedCart));
 
-        setCartProducts(cartProducts)
-    },[])
+      return updatedCart;
+    });
+  }, []);
 
-    const handleAddProductToCart= useCallback((product:CartProductType)=>{
-        setCartProducts((prev)=>{
-             let updatedCart;
-             if(prev){
-                updatedCart=[...prev,product]
-             }else{
-                updatedCart=[product]
-             }
-             toast.success('Product added to cart');
-             localStorage.setItem('eShopCartItems',JSON.stringify(updatedCart))
-
-             return updatedCart;
-        })
-    },[])
-        
-    
-
-    const value={
-        cartTotalQty,
-        cartProducts,
-        handleAddProductToCart,
+  const handleRemoveProductFromCart = useCallback((product: CartProductType) => {
+    if (cartProducts) {
+      const filterProducts = cartProducts.filter((item) => {
+        return item.id !== product.id;
+      });
+      setCartProducts(filterProducts)
+      toast.success("Product Removed");
+      localStorage.setItem("eShopCartItems", JSON.stringify(filterProducts));
     }
-   return <CartContext.Provider value={value} {...props}/>
-}
+  }, [cartProducts]);
 
-export const useCart=()=>{
-    const context= useContext(CartContext);
+  const value = {
+    cartTotalQty,
+    cartProducts,
+    handleAddProductToCart,
+    handleRemoveProductFromCart,
+  };
+  return <CartContext.Provider value={value} {...props} />;
+};
 
-    if(context===null){
-        throw new Error("useCart must be used within a cartContextProvider")
-    }
+export const useCart = () => {
+  const context = useContext(CartContext);
 
-    return context;
-}
+  if (context === null) {
+    throw new Error("useCart must be used within a cartContextProvider");
+  }
+
+  return context;
+};
