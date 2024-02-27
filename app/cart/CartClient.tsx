@@ -1,6 +1,7 @@
 "use client"
 
 import { useCart } from "@/hooks/useCart";
+import { formatPrice } from "@/utils/formatPrice";
 import Link from "next/link";
 import { MdArrowBack } from "react-icons/md";
 import Button from "../components/Button";
@@ -8,7 +9,7 @@ import Heading from "../components/Heading";
 import ItemContent from "./ItemContent";
 
 const CartClient = () => {
-    const {cartProducts,handleClearCart} = useCart();
+    const {cartProducts,handleClearCart,cartTotalAmount} = useCart();
 
     if(!cartProducts || cartProducts.length===0){
         return (
@@ -56,7 +57,7 @@ const CartClient = () => {
                     
                         <div className="flex justify-between w-full text-base font-semibold">
                         <span>Subtotal</span>
-                        <span>$1000</span>
+                        <span>{formatPrice(cartTotalAmount)}</span>
                         </div>
                         <p className="text-slate-500">Taxes and shipping calculate and checkout</p>
                         <Button label="Checkout" onClick={()=>{}}/>
