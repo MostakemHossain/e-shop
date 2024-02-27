@@ -15,7 +15,7 @@ const NavBar = () => {
                     <div className="hidden md:block">Search</div>
                     <div className="flex items-center gap-8 md:gap-12">
                         <CartCount/>
-                        <div>USer menu</div>
+                        <div>User menu</div>
                     </div>
                 </div>
             </Container>

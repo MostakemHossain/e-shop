@@ -9,7 +9,9 @@ const CartProvider:React.FC<CartProviderProps> = ({children}) => {
     return (  
        
             <CartContextProvider>
+                <div>
                 {children}
+                </div>
                 </CartContextProvider>
 
        
